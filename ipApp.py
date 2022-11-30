@@ -1,22 +1,17 @@
-import urllib.request
 from flask import Flask, render_template, request, jsonify
 from werkzeug.exceptions import InternalServerError
 import os
+from subprocess import check_output
 
-# class ipAppClass():
-#     def __init__(self):
-#         pass
-def ip4Func():
-    external_ip4 = urllib.request.urlopen('https://v4.ident.me').read().decode('utf8')
-    return external_ip4
+#Returns the internal ipv4: public and private
+def local_ipv4():
+    internalIP = os.popen('hostname -i').readline()
+    #internalIP = str(internalIP)[2:-3]
+    return internalIP
 
-def ip6Func():
-    external_ip6 = urllib.request.urlopen('https://v6.ident.me').read().decode('utf8')
-    return external_ip6
-
-# Another way I liked to return the external ipv4
-def ip4os():
-    externalIP  = os.popen('curl -s ifconfig.me').readline()
+# Returns the external ipv4
+def external_ipv4():
+    externalIP  = os.popen('curl -s -4 icanhazip.com').readline()
     return externalIP
 
 app = Flask(__name__)
@@ -29,10 +24,12 @@ def validation_failure(err):
 
 @app.route('/')
 def index():
-    ip4out = ip4Func()
-    ip6out = ip6Func()
-    return render_template('test.html',ipv4 = ip4out, ipv6 = ip6out)
+    ex_ipv4_out = external_ipv4()
+    in_ipv4_out = local_ipv4()
+    return render_template('ipapp_ui.html',ex_ipv4 = ex_ipv4_out, in_ipv4 = in_ipv4_out)
 
 if __name__=="__main__":
     app.run(port=80,host="0.0.0.0")
+    #app.run(port=8080,host="0.0.0.0")
+
 
