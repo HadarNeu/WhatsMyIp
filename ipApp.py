@@ -5,8 +5,8 @@ from subprocess import check_output
 
 #Returns the internal ipv4: public and private
 def local_ipv4():
-    internalIP = check_output(['hostname', '-I'])
-    internalIP = str(internalIP)[2:-3]
+    internalIP = os.popen('hostname -i').readline()
+    #internalIP = str(internalIP)[2:-3]
     return internalIP
 
 # Returns the external ipv4
@@ -29,7 +29,7 @@ def index():
     return render_template('ipapp_ui.html',ex_ipv4 = ex_ipv4_out, in_ipv4 = in_ipv4_out)
 
 if __name__=="__main__":
-   #app.run(port=80,host="0.0.0.0")
-    app.run(port=8080,host="0.0.0.0")
+    app.run(port=80,host="0.0.0.0")
+    #app.run(port=8080,host="0.0.0.0")
 
 
