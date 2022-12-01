@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ipapp
+    labels:
+        app: ipapp
+    namespace: ingress-nginx
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: ipapp
+    template:
+        metadata:
+            labels:
+                app: ipapp
+        spec:
+            containers:
+            - name: ipapp
+              image: hadarneu/ipapp
+              imagePullPolicy: IfNotPresent
+              ports:
+              - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipapp-service
+  namespace: ingress-nginx
+spec:
+  selector:
+    app: ipapp
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
