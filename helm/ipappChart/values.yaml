@@ -1,0 +1,32 @@
+deployment:
+  app:
+    image: "hadarneu/ipapp"
+    name: "ipapp"
+    replicas: 2
+    imagePullPolicy: "IfNotPresent"
+    containerPort: 80
+  webserver:
+    name: "nginx"
+    tag: "latest"
+    replicas: 2
+    configmap:
+      name: "nginx-conf"
+      mountpath: /etc/nginx/conf.d
+      key: default.conf
+      path: default.conf
+      port: 80
+      servername: "localhost"
+      proxypass: http://ipapp-service:8080/
+service:
+  app:
+    name: "ipapp-service"
+    protocol: "TCP"
+    port: 8080
+    targetPort: 80
+  webserver:
+    name: "nginx-service"
+    protocol: "TCP"
+    port: 80
+    targetPort: 80
+    nodePort: 31000
+    type: "NodePort"
