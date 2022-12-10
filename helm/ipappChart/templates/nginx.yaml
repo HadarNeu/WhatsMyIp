@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.webserver.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.webserver.name }}
+  replicas: {{ .Values.deployment.webserver.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.webserver.name }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.webserver.name }}
+        image: {{ .Values.deployment.webserver.name }}:{{ .Values.deployment.webserver.tag }}
+        volumeMounts:
+        - name: {{ .Values.deployment.webserver.configmap.name }}
+          mountPath: {{ .Values.deployment.webserver.configmap.mountpath }}
+      volumes:
+      - name: {{ .Values.deployment.webserver.configmap.name }}
+        configMap:
+          name: {{ .Values.deployment.webserver.configmap.name }}
+          items:
+            - key: {{ .Values.deployment.webserver.configmap.key }}
+              path: {{ .Values.deployment.webserver.configmap.path }}
+

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.deployment.webserver.configmap.name }}
+data:
+  default.conf: |
+    server {
+      listen {{ .Values.deployment.webserver.configmap.port }};
+      server_name  {{ .Values.deployment.webserver.configmap.servername }};
+      location / {
+         proxy_pass {{ .Values.deployment.webserver.configmap.proxypass }};
+      }
+    }
