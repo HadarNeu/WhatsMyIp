@@ -4,6 +4,8 @@
 This project is a helm chart which includes 2 pods: 
 1. The App pod: Python Flask- returns your external and internal IP addresses.
 2. The Nginx pod: a reverse proxy for the app.
+## Thats the app's output:
+![alt text](./Images/output.png?raw=true "output")
 
 ## How does it work?
 1. I created a Python Flask app. 
@@ -11,6 +13,7 @@ This project is a helm chart which includes 2 pods:
 2. The deployment of Nginx works as a reverse proxy for the app. 
 3. In the config file, I configured Nginx to route traffic to the app's ClusterIP service.    
 4. The NodePort service is then the deployment's gateway and is routing traffic to the Nginx pod. 
+![alt text](./Images/InfrastructureDiagram.png?raw=true "output")
 
 ## So how can YOU use this app? 
 1. Install minikube (a single node kubernetes tool). It's a great way for you to learn k8s and practice the skills in your home environment. 
