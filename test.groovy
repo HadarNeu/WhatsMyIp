@@ -1,4 +1,4 @@
 stage("test") {
 
-    echo "hello"
+    echo "hello world"
 }
